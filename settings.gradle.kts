@@ -19,6 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Egor Tracker"
+rootProject.name = "Android(Tracker"
 include(":app")
- 
