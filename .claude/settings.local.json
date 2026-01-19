@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(adb devices:*)",
+      "Bash(flutter devices:*)",
+      "Bash(./gradlew:*)",
+      "Bash(\"C:\\\\Users\\\\Acer\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" devices)",
+      "Bash(\"C:\\\\Users\\\\Acer\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" kill-server)",
+      "Bash(\"C:\\\\Users\\\\Acer\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" start-server)",
+      "Bash(adb logcat:*)",
+      "Bash(where:*)",
+      "Bash(\"C:\\\\Users\\\\Acer\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" logcat -d *:E)",
+      "Bash(\"C:\\\\Users\\\\Acer\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" shell pm list packages)",
+      "Bash(\"C:\\\\Users\\\\Acer\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" emu kill)",
+      "Bash(\"C:\\\\Users\\\\Acer\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\emulator\\\\emulator.exe\" -avd Medium_Phone_API_36.1 -no-snapshot-load -wipe-data)",
+      "Bash(\"C:\\\\Users\\\\Acer\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" shell getprop sys.boot_completed)",
+      "Bash(taskkill:*)",
+      "Bash(\"C:\\\\Users\\\\Acer\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" install -r app/build/outputs/apk/debug/app-debug.apk)",
+      "Bash(\"C:\\\\Users\\\\Acer\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" -s emulator-5554 install -r app/build/outputs/apk/debug/app-debug.apk)",
+      "Bash(\"C:\\\\Users\\\\Acer\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" -s emulator-5554 logcat -c)",
+      "Bash(\"C:\\\\Users\\\\Acer\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" -s emulator-5554 logcat -d)",
+      "Bash(\"C:\\\\Users\\\\Acer\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" -s emulator-5554 shell am start -n com.example.trackerfinal/.MainActivity)",
+      "Bash(\"C:\\\\Users\\\\Acer\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" -s emulator-5554 logcat -d -s \"System.out\" -s \"AndroidRuntime\")",
+      "Bash(\"C:\\\\Users\\\\Acer\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" -s emulator-5554 logcat -d -s \"OsmVM:D\" -s \"OsmVM:E\")",
+      "Bash(\"C:\\\\Users\\\\Acer\\\\AppData\\\\Local\\\\Android\\\\Sdk\\\\platform-tools\\\\adb.exe\" -s emulator-5554 logcat -d *:E)"
+    ]
+  }
+}
