@@ -1,16 +1,20 @@
 package com.example.trackerfinal
 
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -33,11 +37,36 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-sealed class Screen(val route: String, val title: String, val icon: androidx.compose.ui.graphics.vector.ImageVector) {
-    object Location : Screen("location", "Location", Icons.Default.LocationOn)
-    object Map : Screen("map", "Map", Icons.Default.Place)
-    object Tracker : Screen("tracker", "Tracker", Icons.Default.Search)
-    object Path : Screen("path", "Path", Icons.Default.Create)
+sealed class Screen(
+    val route: String,
+    val title: String,
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector
+) {
+    object Location : Screen(
+        "location",
+        "Location",
+        Icons.Filled.LocationOn,
+        Icons.Outlined.LocationOn
+    )
+    object Map : Screen(
+        "map",
+        "Map",
+        Icons.Filled.Map,
+        Icons.Outlined.Map
+    )
+    object Tracker : Screen(
+        "tracker",
+        "Tracker",
+        Icons.Filled.GpsFixed,
+        Icons.Outlined.GpsFixed
+    )
+    object Path : Screen(
+        "path",
+        "Path",
+        Icons.Filled.Route,
+        Icons.Outlined.Route
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,35 +81,64 @@ fun MainScreen() {
         Screen.Path
     )
 
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Tracker App") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(
+                        text = items.find { it.route == currentRoute }?.title ?: "Tracker",
+                        fontWeight = FontWeight.SemiBold
+                    )
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface
                 )
             )
         },
         bottomBar = {
-            NavigationBar {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
-
+            NavigationBar(
+                containerColor = MaterialTheme.colorScheme.surface,
+                tonalElevation = NavigationBarDefaults.Elevation
+            ) {
                 items.forEach { screen ->
+                    val selected = currentRoute == screen.route
+
                     NavigationBarItem(
-                        icon = { Icon(screen.icon, contentDescription = screen.title) },
-                        label = { Text(screen.title) },
-                        selected = currentRoute == screen.route,
+                        icon = {
+                            Icon(
+                                imageVector = if (selected) screen.selectedIcon else screen.unselectedIcon,
+                                contentDescription = screen.title
+                            )
+                        },
+                        label = {
+                            Text(
+                                text = screen.title,
+                                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal
+                            )
+                        },
+                        selected = selected,
                         onClick = {
-                            navController.navigate(screen.route) {
-                                popUpTo(navController.graph.startDestinationId) {
-                                    saveState = true
+                            if (currentRoute != screen.route) {
+                                navController.navigate(screen.route) {
+                                    popUpTo(navController.graph.startDestinationId) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
                             }
-                        }
+                        },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            selectedTextColor = MaterialTheme.colorScheme.primary,
+                            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     )
                 }
             }
@@ -89,7 +147,13 @@ fun MainScreen() {
         NavHost(
             navController = navController,
             startDestination = Screen.Location.route,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
+            enterTransition = {
+                fadeIn(animationSpec = tween(200))
+            },
+            exitTransition = {
+                fadeOut(animationSpec = tween(200))
+            }
         ) {
             composable(Screen.Location.route) {
                 LocationScreen()
